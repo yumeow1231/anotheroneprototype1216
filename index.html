@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Endurance List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- 引入外部 css -->
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+
+</head>
+<body>
+  <div class="phone">
+    <div class="status-bar">
+      <span>9:41</span>
+      <span>◎◎◎</span>
+    </div>
+
+    <!-- 主页面 -->
+    <div id="main-page">
+      <div class="paper-frame">
+        <div class="paper-content">
+          <h1>ENDURANCE LIST</h1>
+
+          <div class="puzzle-grid" id="puzzle-grid"></div>
+          <div class="object-list" id="object-list"></div>      
+          <!-- ⭐⭐⭐ 在这里插入 Clear 按钮 ⭐⭐⭐ -->
+          <button class="btn-clear" id="btn-clear">Clear!</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 物品页面 -->
+    <div id="item-page">
+      <div class="paper-frame">
+        <div class="paper-content">
+          <div style="text-align:center;margin-bottom:10px;">
+            <div class="badge">ANOTHER ONE RECEIPT</div>
+            <h2><span id="item-title" class="editable-title">ANOTHER ONE NAME</span></h2>
+          </div>
+
+          <label class="photo-area" id="photo-area">
+            <div id="photo-placeholder" class="photo-area-text">
+              Upload another one’s photo here!!!
+            </div>
+            <img id="photo-preview" style="display:none;">
+            <input id="photo-input" type="file" accept="image/*">
+          </label>
+
+          <div class="price-big" id="price-display">€ ???</div>
+
+          <div class="sub-price-list">
+            <div class="sub-line">
+              <span class="sub-label">Imagining having it</span>
+              <span class="dots"></span>
+              <span class="sub-price">€ ?</span>
+            </div>
+            <div class="sub-line">
+              <span class="sub-label">Regretting the former one</span>
+              <span class="dots"></span>
+              <span class="sub-price">€ ?</span>
+            </div>
+            <div class="sub-line">
+              <span class="sub-label">Chasing perfection</span>
+              <span class="dots"></span>
+              <span class="sub-price">€ ?</span>
+            </div>
+            <div class="sub-line">
+              <span class="sub-label">Pursuing novelty</span>
+              <span class="dots"></span>
+              <span class="sub-price">€ ?</span>
+            </div>
+          </div>
+
+
+          <div class="barcode"></div>
+          <button class="btn-confirm" id="btn-confirm">Confirm!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+/* ===============================
+   Reset
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===============================
+   Body & Phone
+================================ */
+body {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+
+  /* 绿色格子背景 */
+  background: url('green-bg.png') repeat;
+  background-size: 500px;
+
+  font-family: Arial, sans-serif;
+}
+
+.phone {
+  width: 390px;
+  min-height: 844px;
+  margin: 0 auto;
+}
+
+/* ③ 状态栏：保留高度和背景，不显示文字 */
+.status-bar {
+  width: 390px;
+  height: 58px;
+  background: #FFEFB0;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+}
+
+/* 隐藏里面的文字和符号 */
+.status-bar span {
+  display: none;
+}
+
+/* ===============================
+   撕纸纸张整体背景（paper-frame.png）
+================================ */
+.paper-frame {
+  width: 100%;
+  min-height: calc(844px - 58px);
+
+  /* ① 居中 + 向右微调，补偿阴影偏左的问题 */
+  background-image: url('paper-frame.png');
+  background-repeat: no-repeat;
+  background-position: calc(50% + 14px) top; /* 可以微调 +8 / +10 */
+  background-size: auto 90%;               /* 保持图片等比、高度铺满 */
+
+  display: flex;
+}
+
+/* 白纸内部的内容区：固定宽度，整体居中 */
+.paper-content {
+  width: 280px;           /* 纸张可写区域的宽度，居中对齐 *//* 原来 320，可以试 340 / 350 看手感 */
+  margin: 0 auto;
+  padding: 40px 0 40px;   /* 上下留白，左右由 width 控制 */
+}
+
+/* ===============================
+   标题
+================================ */
+h1 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+
+.badge {
+  display: inline-block;
+  background: #333;
+  color: white;
+  padding: 4px 12px;
+  font-size: 11px;
+  border-radius: 0;       /* 取消圆角 */
+  margin-bottom: 10px;
+}
+
+/* ===============================
+   拼图区域：九宫格
+================================ */
+.puzzle-grid {
+  width: 260px;
+  height: 260px;
+  margin: 0 auto 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+/* 拼图九宫格容器保持不变 */
+.puzzle-grid {
+  width: 260px;
+  height: 260px;
+  margin: 0 auto 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+/* ========== 拼图底图（整块 puzzle.png 按 3×3 切成 9 块） ========== */
+.puzzle-piece {
+  position: relative;
+  background-image: url('puzzle.png');
+  background-size: 300% 300%;              /* 把整张大图按 3×3 拉伸 */
+  background-position: var(--px) var(--py); /* 每块显示自己的 1/9 区域 */
+  overflow: hidden;
+}
+
+/* ========== 照片：用 mask 裁成拼图形状 ========== */
+.puzzle-piece .puzzle-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  -webkit-mask-image: url('puzzle-mask.png');
+  mask-image: url('puzzle-mask.png');
+  -webkit-mask-size: 300% 300%;
+  mask-size: 300% 300%;
+  -webkit-mask-position: var(--px) var(--py);
+  mask-position: var(--px) var(--py);
+}
+
+/* ========== 覆盖 outline（透明填充 + 阴影） ========== */
+.puzzle-piece::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background-image: url('puzzle-outline.png');
+  background-size: 300% 300%;
+  background-position: var(--px) var(--py);
+}
+
+
+/* 没有图片时显示数字 */
+.puzzle-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 800;
+  color: #d4c76f;
+}
+
+
+/* ===============================
+   Object 列表
+================================ */
+.object-list {
+  margin-top: 10px; /* 列表到拼图之间的距离 */
+  font-size: 15px;
+}
+
+.object-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dotted #777;
+  cursor: pointer;
+  font-size: 14px;     /* 原本大概 18，现在更紧凑 */
+  line-height: 1;    /* 行间距变小 */
+  padding: 6px 0;      /* 控制上下占据空间 */
+}
+
+.object-row span.price {
+  width: 60px;
+  text-align: right;
+}
+
+/* ===============================
+   物品页面
+================================ */
+
+.editable-title {
+  cursor: pointer;
+}
+
+/* ④ 图片区域：固定 256×234，内文左右留白 */
+.photo-area {
+  width: 256px;
+  height: 234px;
+  margin: 0 auto 20px;
+
+  background: #FFEFB0;
+  border-radius: 0;
+
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.photo-area img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 文本左右 padding，避免贴边 */
+.photo-area-text {
+  z-index: 2;
+  font-size: 18px;
+  font-weight: 700;
+  color: #67692b;
+  padding: 0 20px;
+  text-align: left;
+}
+
+#photo-input {
+  display: none;
+}
+
+/* 大价格显示 */
+.price-big {
+  font-size: 28px;
+  text-align: center;
+  font-weight: 900;
+  margin: 14px 0 18px;
+  cursor: pointer;
+}
+
+/* 小费用列表 */
+.sub-price-list {
+  margin-bottom: 20px;
+}
+
+/* 物品页面list */
+.sub-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px dotted #999;    
+  /* 下面三个是你可以自由调节的部分 */
+  font-size: 14px;      /* 字号 */
+  line-height: 1.2;     /* 行间距（越小越紧凑） */
+  padding: 4px 0;       /* 上下内边距，让排版更好看 */
+}
+
+/* 条形码 */
+.barcode {
+  width: 100%;
+  height: 60px;                    /* 高度按图片比例调 */
+  margin: 20px 0;
+
+  background-image: url('barcode.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;        /* 或 cover，看你图片效果 */
+}
+
+
+/* ⑤ Confirm 按钮：224×46，圆角 50，绝对居中 */
+.btn-confirm {
+  width: 224px;
+  height: 46px;
+
+  margin: 20px auto 40px;
+
+  background: #FFEFB0;
+  border: none;
+  border-radius: 50px;
+
+  font-size: 20px;
+  font-weight: 900;
+  cursor: pointer;
+
+  display: block;
+  text-align: center;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* 主标题：ENDURANCE LIST */
+.paper-content h1 {
+  font-family: 'Black Han Sans', sans-serif;
+  letter-spacing: 1px;      /* 可选，让字更稳重 */
+
+  margin-top: 30px;     /* 调大，使标题往下移动 */
+  margin-bottom: 50px;  /* 标题与拼图之间距离稍微大一点 */
+}
+
+/* 物品页面标题（bear）的位置控制 */
+#item-title {
+    display: block;
+    font-family: 'Black Han Sans', sans-serif;
+    font-size: 42px;  /* 你自己调 */
+    margin-top: 10px; /* 调整它与上面 badge 之间的距离 */
+    margin-bottom: 10px; /* 调整它与图片之间的距离 */
+    text-align: center;
+}
+
+
+.puzzle-grid {
+  margin-top: -10px;   /* 数字越小越往上，你可以试 -10、-15、-20 */
+  margin-bottom: 10px;   /* 原本可能是 20 或更多，缩小它 */
+}
+#main-page .paper-content {
+  padding-top: 20px;  /* 默认可能是 40，可减少以整体上移 */
+}
+
+/*修改主页面标题字号间距*/
+.paper-content h1 {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 40px;         /* ← 字号 */
+  line-height: 1;        /* ← 行间距（越小越紧） */
+  letter-spacing: 1px;
+  margin-bottom: 20px;     /* ← 标题下方的空隙 */
+  text-align: center;
+}
+
+/*修改物品标题字号间距*/
+#item-title {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 34px;           /* 标题字号 */
+  line-height: 1.0;          /* 行间距 */
+  letter-spacing: 1px;
+  margin-bottom: 8px;       /* 下方空隙 */
+  display: inline-block;
+}
+
+/* Clear 按钮（主界面） */
+.btn-clear {
+  width: 80%;
+  margin: 30px auto 0 auto;
+  display: block;
+
+  background: #ffeaa7;
+  color: #000;
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 28px;
+  padding: 18px 0;
+
+  border: none;
+  border-radius: 40px;
+
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 0px #d2c089;
+}
