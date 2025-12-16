@@ -171,10 +171,20 @@ photoArea.addEventListener('click', (e) => {
 
 
 photoInput.addEventListener('change', (e) => {
-  alert('✅ change fired');
   const file = e.target.files && e.target.files[0];
-  alert(file ? `✅ got file: ${file.name}` : '❌ no file');
+  if (!file) return;
+
+  const url = URL.createObjectURL(file);
+
+  photoPreview.onload = () => URL.revokeObjectURL(url);
+  photoPreview.src = url;
+
+  photoPreview.style.display = 'block';
+  photoPlaceholder.style.display = 'none';
+
+  e.target.value = '';
 });
+
 
 
 

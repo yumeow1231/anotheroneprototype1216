@@ -215,13 +215,36 @@ h2 {
   cursor: pointer;
 }
 
+/* ✅ input 不显示UI，但可点 */
+#photoInput{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 3;
+}
+
+/* ✅ 预览图铺满黄框 */
 #photoPreview{
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: none; /* JS 里会改成 block */
+  display: none;
+  z-index: 1;
+}
+
+/* ✅ 文字在上层（没图时显示） */
+#photoPlaceholder{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 20px;
+  z-index: 2;
 }
 
 
