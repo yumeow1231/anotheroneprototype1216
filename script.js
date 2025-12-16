@@ -160,35 +160,62 @@ photoArea.addEventListener('click', (e) => {
   photoInput.click();
 });
 
-// 处理图片上传（电脑 + 手机都稳）
+
+
+
+photoInput.addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  alert(file ? `${file.name}\n${file.type}\n${(file.size/1024/1024).toFixed(2)}MB` : 'NO FILE');
+
+  if (!file) return;
+
+  const url = URL.createObjectURL(file);
+  photoPreview.src = url;
+  photoPreview.style.display = 'block';
+  photoPlaceholder.style.display = 'none';
+
+  photoPreview.onload = () => alert('IMG onload ✅');
+  photoPreview.onerror = () => alert('IMG onerror ❌');
+
+  e.target.value = '';
+});
+
+
+// ✅ 处理图片上传（电脑 + 手机都可）
 photoInput.addEventListener('change', (e) => {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
 
-  /* ① 先用 objectURL 显示（不占 localStorage） */
+  /* ① 先用 objectURL 显示（手机最稳，不占 localStorage） */
   const objectUrl = URL.createObjectURL(file);
   photoPreview.src = objectUrl;
   photoPreview.style.display = 'block';
   photoPlaceholder.style.display = 'none';
 
-  /* ② 再尝试转 base64 并保存（失败也不影响显示） */
-  const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      items[currentIndex].imageData = reader.result;
-      saveItems(); // 手机可能失败，但不会影响预览
-    } catch (err) {
-      console.warn('localStorage 保存失败（手机常见）', err);
-    }
+  photoPreview.onload = () => {
+    URL.revokeObjectURL(objectUrl); // 释放内存（很重要）
   };
-  reader.onerror = () => {
-    alert('图片读取失败，可以换一张再试');
-  };
-  reader.readAsDataURL(file);
 
-  /* ③ 关键：清空 input，防止手机重复选同一张不触发 change */
+  /* ② 再尝试转 base64 存储（失败不影响显示） */
+  try {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        items[currentIndex].imageData = reader.result;
+        saveItems(); // 手机上可能失败，但没关系
+      } catch (err) {
+        console.warn('localStorage 保存失败（手机常见）', err);
+      }
+    };
+    reader.readAsDataURL(file);
+  } catch (err) {
+    console.warn('FileReader 失败', err);
+  }
+
+  /* ③ 关键：清空 input，防止手机重复选择不触发 change */
   e.target.value = '';
 });
+
 
 
 // 编辑价格
