@@ -167,27 +167,33 @@ photoInput.addEventListener('change', (e) => {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
 
+  // 先显示：手机最稳（不依赖 base64 / localStorage）
   const url = URL.createObjectURL(file);
 
-  photoPreview.onload = () => {
-    URL.revokeObjectURL(url);
-  };
+  // 先清掉旧事件，避免多次绑定造成混乱
+  photoPreview.onload = null;
+  photoPreview.onerror = null;
 
+  photoPreview.onload = () => {
+    URL.revokeObjectURL(url); // 释放内存
+  };
   photoPreview.onerror = () => {
-    alert('Image load failed');
+    alert('图片加载失败（可能是格式/权限/浏览器限制）');
   };
 
   photoPreview.src = url;
   photoPreview.style.display = 'block';
   photoPlaceholder.style.display = 'none';
 
-  // 🔴 关键：强制给 img 尺寸
-  photoPreview.style.width = '100%';
-  photoPreview.style.height = '100%';
-  photoPreview.style.objectFit = 'cover';
+  // 如果你还想“保存到 items”，先别存 base64（手机很容易爆）
+  // 先只存一个标记，表示这一格有图（或存一个小图再说）
+  items[currentIndex].hasImage = true;
+  saveItems?.();
 
+  // 关键：清空 input，保证下次选同一张也触发 change
   e.target.value = '';
 });
+
 
 
 
