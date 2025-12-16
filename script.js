@@ -165,56 +165,30 @@ photoArea.addEventListener('click', (e) => {
 
 photoInput.addEventListener('change', (e) => {
   const file = e.target.files && e.target.files[0];
-  alert(file ? `${file.name}\n${file.type}\n${(file.size/1024/1024).toFixed(2)}MB` : 'NO FILE');
-
   if (!file) return;
 
   const url = URL.createObjectURL(file);
+
+  photoPreview.onload = () => {
+    URL.revokeObjectURL(url);
+  };
+
+  photoPreview.onerror = () => {
+    alert('Image load failed');
+  };
+
   photoPreview.src = url;
   photoPreview.style.display = 'block';
   photoPlaceholder.style.display = 'none';
 
-  photoPreview.onload = () => alert('IMG onload ✅');
-  photoPreview.onerror = () => alert('IMG onerror ❌');
+  // 🔴 关键：强制给 img 尺寸
+  photoPreview.style.width = '100%';
+  photoPreview.style.height = '100%';
+  photoPreview.style.objectFit = 'cover';
 
   e.target.value = '';
 });
 
-
-// ✅ 处理图片上传（电脑 + 手机都可）
-photoInput.addEventListener('change', (e) => {
-  const file = e.target.files && e.target.files[0];
-  if (!file) return;
-
-  /* ① 先用 objectURL 显示（手机最稳，不占 localStorage） */
-  const objectUrl = URL.createObjectURL(file);
-  photoPreview.src = objectUrl;
-  photoPreview.style.display = 'block';
-  photoPlaceholder.style.display = 'none';
-
-  photoPreview.onload = () => {
-    URL.revokeObjectURL(objectUrl); // 释放内存（很重要）
-  };
-
-  /* ② 再尝试转 base64 存储（失败不影响显示） */
-  try {
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        items[currentIndex].imageData = reader.result;
-        saveItems(); // 手机上可能失败，但没关系
-      } catch (err) {
-        console.warn('localStorage 保存失败（手机常见）', err);
-      }
-    };
-    reader.readAsDataURL(file);
-  } catch (err) {
-    console.warn('FileReader 失败', err);
-  }
-
-  /* ③ 关键：清空 input，防止手机重复选择不触发 change */
-  e.target.value = '';
-});
 
 
 
