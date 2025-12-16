@@ -200,28 +200,30 @@ h2 {
 }
 
 /* ④ 图片区域：固定 256×234，内文左右留白 */
-.photo-area {
+.photo-area{
   width: 256px;
   height: 234px;
   margin: 0 auto 20px;
 
-  width: 100%;
-  aspect-ratio: 1 / 1;   /* 🔥 强烈推荐 */
   position: relative;
   overflow: hidden;
 
   background: #FFEFB0;
-  border-radius: 0;
-
-  position: relative;
-  overflow: hidden;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   cursor: pointer;
 }
+
+#photoPreview{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none; /* JS 里会改成 block */
+}
+
 
 .photo-area img {
   position: absolute;
@@ -241,9 +243,15 @@ h2 {
   text-align: left;
 }
 
-#photo-input {
-  display: none;
+#photoInput{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
 }
+.photo-area{ position: relative; }
+
 
 /* 大价格显示 */
 .price-big {
@@ -372,11 +380,4 @@ h2 {
   text-align: center;
 
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-#photoPreview{
-  display: block;      /* ✅ 别用 inline */
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }

@@ -1,5 +1,12 @@
 // script.js
 
+//把下面这段放到 script.js 最顶部第一行（临时用）
+alert('✅ script.js loaded');
+//把这段也放在 script.js 顶部（在任何代码之前）：
+window.onerror = function (msg, src, line, col, err) {
+  alert(`❌ JS error:\n${msg}\n${line}:${col}`);
+};
+
 // ----- Data -----
 const STORAGE_KEY = 'endurance-items-v1';
 
