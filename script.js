@@ -1,12 +1,5 @@
 // script.js
 
-//把下面这段放到 script.js 最顶部第一行（临时用）
-alert('✅ script.js loaded');
-//把这段也放在 script.js 顶部（在任何代码之前）：
-window.onerror = function (msg, src, line, col, err) {
-  alert(`❌ JS error:\n${msg}\n${line}:${col}`);
-};
-
 // ----- Data -----
 const STORAGE_KEY = 'endurance-items-v1';
 
@@ -167,28 +160,40 @@ photoArea.addEventListener('click', (e) => {
   photoInput.click();
 });
 
-
-
-
+// 处理图片上传（兼容手机）
 photoInput.addEventListener('change', (e) => {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
 
-  const url = URL.createObjectURL(file);
+  const reader = new FileReader();
 
-  photoPreview.onload = () => URL.revokeObjectURL(url);
-  photoPreview.src = url;
+  reader.onload = () => {
+    const dataUrl = reader.result;
 
-  photoPreview.style.display = 'block';
-  photoPlaceholder.style.display = 'none';
+    // 1. 存到当前物品
+    items[currentIndex].imageData = dataUrl;
+    saveItems();
 
+    // 2. 更新当前物品页预览
+    photoPreview.src = dataUrl;
+    photoPreview.style.display = 'block';
+    photoPlaceholder.style.display = 'none';
+
+    // 3. 刷新主页面拼图（如果你之前有这个函数的话）
+    if (typeof buildMainPage === 'function') {
+      buildMainPage();
+    }
+  };
+
+  reader.onerror = () => {
+    alert('图片读取失败了，可以再试一次，或者换一张图片试试。');
+  };
+
+  reader.readAsDataURL(file);
+
+  // ⭐ 关键：清空 input 的值，避免手机上两次选同一张图不触发 change
   e.target.value = '';
 });
-
-
-
-
-
 
 
 // 编辑价格
