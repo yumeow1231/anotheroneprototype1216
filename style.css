@@ -236,9 +236,16 @@ h2 {
   text-align: left;
 }
 
-#photo-input {
-  display: none;
+#photo-input{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
 }
+
 
 /* 大价格显示 */
 .price-big {

@@ -154,11 +154,11 @@ itemTitle.addEventListener('click', () => {
   }
 });
 
-// 点击黄色框 → 选择图片
-photoArea.addEventListener('click', (e) => {
-  if (e.target === photoInput) return;
-  photoInput.click();
-});
+// 点击黄色框 → 选择图片 手机显示需要注释掉
+//photoArea.addEventListener('click', (e) => {
+  //if (e.target === photoInput) return;
+  //photoInput.click();
+//});
 
 // 处理图片上传（兼容手机）
 photoInput.addEventListener('change', (e) => {
